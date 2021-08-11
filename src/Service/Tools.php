@@ -166,4 +166,24 @@ final class Tools extends \Promopult\TikTokMarketingApi\AbstractService
             ]
         );
     }
+
+    /**
+     * Delete page test lead.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $leadId     # Lead ID
+     * @return array
+     * @throws \Throwable
+     */
+    public function deleteMock(int $advertiserId, int $leadId): array
+    {
+        return $this->requestApi(
+            'POST',
+            '/open_api/v1.2/pages/leads/mock/delete/',
+            [
+                'advertiser_id' => $advertiserId,
+                'lead_id' => $leadId
+            ]
+        );
+    }
 }
