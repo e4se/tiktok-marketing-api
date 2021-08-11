@@ -139,7 +139,7 @@ final class Tools extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'POST',
-            '/open_api/v1.2/pages/leads/mock/get/',
+            '/open_api/v1.2/pages/leads/mock/create/',
             [
                 'advertiser_id' => $advertiserId,
                 'page_id' => $pageId
@@ -159,7 +159,7 @@ final class Tools extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'GET',
-            '/open_api/v1.2/pages/leads/mock/create/',
+            '/open_api/v1.2/pages/leads/mock/get/',
             [
                 'advertiser_id' => $advertiserId,
                 'page_id' => $pageId
