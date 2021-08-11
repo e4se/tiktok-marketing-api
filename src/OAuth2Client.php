@@ -147,7 +147,7 @@ final class OAuth2Client
     }
 
     /**
-     * GSubscribe.
+     * Subscribe.
      *
      * @param string $accessToken   Authorized Access Token
      * @param string $appId         The App id applied by the developer
@@ -188,6 +188,95 @@ final class OAuth2Client
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
             $apiBaseUrl . '/open_api/v1.2/subscription/subscribe/',
+            [
+                'Content-Type' => 'application/json'
+            ],
+            json_encode($query)
+        );
+
+        $response = $this->httpClient->sendRequest($request);
+
+        $parsedBody = json_decode($response->getBody()->getContents(), true);
+
+        if (empty($parsedBody)) {
+            throw new \Promopult\TikTokMarketingApi\Exception\MalformedResponse($request, $response);
+        }
+
+        return $parsedBody;
+    }
+
+    /**
+     * Get subscribe.
+     *
+     * @param string $appId         The App id applied by the developer
+     * @param string $secret        The private key of the developer's application
+     * @param string $apiBaseUrl
+     *
+     * @return array
+     *
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     *
+     * @see https://ads.tiktok.com/marketing_api/docs?id=100579
+     */
+    public function getSubscribes(
+        string $appId,
+        string $secret,
+        string $apiBaseUrl = CredentialsInterface::API_BASE_URL
+    ): array {
+        $query = http_build_query([
+            'object' => 'LEAD',
+            'app_id' => $appId,
+            'secret' => $secret,
+            'page_size' => 1000
+        ]);
+
+        $request = new \GuzzleHttp\Psr7\Request(
+            'GET',
+            $apiBaseUrl . '/open_api/v1.2/subscription/get/?' . $query,
+            [
+                'Accept' => 'application/json'
+            ]
+        );
+
+        $response = $this->httpClient->sendRequest($request);
+
+        $parsedBody = json_decode($response->getBody()->getContents(), true);
+
+        if (empty($parsedBody)) {
+            throw new \Promopult\TikTokMarketingApi\Exception\MalformedResponse($request, $response);
+        }
+
+        return $parsedBody;
+    }
+
+    /**
+     * Delete subscribe.
+     *
+     * @param string $appId         The App id applied by the developer
+     * @param string $secret        The private key of the developer's application
+     * @param int $subscriptionId   SubscriptionId
+     * @param string $apiBaseUrl
+     *
+     * @return array
+     *
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     *
+     * @see https://ads.tiktok.com/marketing_api/docs?id=100579
+     */
+    public function deleteSubscribe(
+        string $appId,
+        string $secret,
+        int $subscriptionId,
+        string $apiBaseUrl = CredentialsInterface::API_BASE_URL
+    ): array {
+        $query = [
+            'subscription_id' => $subscriptionId,
+            'app_id' => $appId,
+            'secret' => $secret
+        ];
+        $request = new \GuzzleHttp\Psr7\Request(
+            'POST',
+            $apiBaseUrl . '/open_api/v1.2/subscription/unsubscribe/',
             [
                 'Content-Type' => 'application/json'
             ],
