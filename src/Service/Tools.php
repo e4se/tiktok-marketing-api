@@ -112,17 +112,18 @@ final class Tools extends \Promopult\TikTokMarketingApi\AbstractService
      * Getting instant pages.
      *
      * @param int $advertiserId     # Advertiser ID
+     * @param int $params     # Additional params
      * @return array
      * @throws \Throwable
      */
-    public function pages(int $advertiserId): array
+    public function pages(int $advertiserId, array $params): array
     {
         return $this->requestApi(
             'GET',
             '/open_api/v1.2/pages/get/',
-            [
+            array_merge($params, [
                 'advertiser_id' => $advertiserId
-            ]
+            ])
         );
     }
 }
