@@ -126,4 +126,44 @@ final class Tools extends \Promopult\TikTokMarketingApi\AbstractService
             ])
         );
     }
+
+    /**
+     * Create page test lead.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $pageId     # Page ID
+     * @return array
+     * @throws \Throwable
+     */
+    public function createMock(int $advertiserId, int $pageId): array
+    {
+        return $this->requestApi(
+            'POST',
+            '/open_api/v1.2/pages/leads/mock/get/',
+            [
+                'advertiser_id' => $advertiserId,
+                'page_id' => $pageId
+            ]
+        );
+    }
+
+    /**
+     * Get page test lead.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $pageId     # Page ID
+     * @return array
+     * @throws \Throwable
+     */
+    public function getMock(int $advertiserId, int $pageId): array
+    {
+        return $this->requestApi(
+            'GET',
+            '/open_api/v1.2/pages/leads/mock/create/',
+            [
+                'advertiser_id' => $advertiserId,
+                'page_id' => $pageId
+            ]
+        );
+    }
 }
