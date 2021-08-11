@@ -145,4 +145,64 @@ final class OAuth2Client
 
         return $apiBaseUrl . '/marketing_api/auth?' . http_build_query($queryParams);
     }
+
+    /**
+     * GSubscribe.
+     *
+     * @param string $accessToken   Authorized Access Token
+     * @param string $appId         The App id applied by the developer
+     * @param string $secret        The private key of the developer's application
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $pageId     # Page ID
+     * @param string $webhook     # Page ID
+     * @param string $apiBaseUrl
+     *
+     * @return array
+     *
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     *
+     * @see https://ads.tiktok.com/marketing_api/docs?id=100579
+     */
+    public function subscribe(
+        string $accessToken,
+        string $appId,
+        string $secret,
+        int $advertiserId,
+        ?int $pageId = null,
+        string $webhook,
+        string $apiBaseUrl = CredentialsInterface::API_BASE_URL
+    ): array {
+        $query = [
+            'subscription_detail' => [
+                'access_token' => $accessToken,
+                'advertiser_id' => $advertiserId,
+            ],
+            'object' => 'LEAD',
+            'url' => $webhook,
+            'app_id' => $appId,
+            'secret' => $secret
+        ];
+        if ($pageId) {
+            $query['subscription_detail']['page_id'] = $pageId;
+        }
+        $query = http_build_query($query);
+
+        $request = new \GuzzleHttp\Psr7\Request(
+            'POST',
+            $apiBaseUrl . '/open_api/v1.2/subscription/subscribe/?' . $query,
+            [
+                'Accept' => 'application/json'
+            ]
+        );
+
+        $response = $this->httpClient->sendRequest($request);
+
+        $parsedBody = json_decode($response->getBody()->getContents(), true);
+
+        if (empty($parsedBody)) {
+            throw new \Promopult\TikTokMarketingApi\Exception\MalformedResponse($request, $response);
+        }
+
+        return $parsedBody;
+    }
 }
