@@ -185,14 +185,13 @@ final class OAuth2Client
         if ($pageId) {
             $query['subscription_detail']['page_id'] = $pageId;
         }
-        $query = http_build_query($query);
-
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
-            $apiBaseUrl . '/open_api/v1.2/subscription/subscribe/?' . $query,
+            $apiBaseUrl . '/open_api/v1.2/subscription/subscribe/',
             [
-                'Accept' => 'application/json'
-            ]
+                'Content-Type' => 'application/json'
+            ],
+            json_encode($query)
         );
 
         $response = $this->httpClient->sendRequest($request);
