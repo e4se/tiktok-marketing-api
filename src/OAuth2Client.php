@@ -131,7 +131,7 @@ final class OAuth2Client
         string $redirectUri,
         string $state,
         ?array $scope = null,
-        string $apiBaseUrl = CredentialsInterface::API_BASE_URL
+        string $apiBaseUrl = CredentialsInterface::API_AUTH_URL
     ): string {
         $queryParams = [
             'app_id' => $appId,
