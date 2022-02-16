@@ -45,6 +45,85 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
                 'title' => $title,
                 'update_time_range' => $updateTimeRange,
                 'business_type' => $businessType
+                ]
+        );
+    }
+
+    /**
+     * Getting instant pages.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param array $params     # Additional params
+     * @return array
+     * @throws \Throwable
+     */
+    public function pages(int $advertiserId, array $params): array
+    {
+        return $this->requestApi(
+            'GET',
+            '/open_api/v1.2/pages/get/',
+            array_merge($params, [
+                'advertiser_id' => $advertiserId
+            ])
+        );
+    }
+
+    /**
+     * Create page test lead.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $pageId     # Page ID
+     * @return array
+     * @throws \Throwable
+     */
+    public function createMock(int $advertiserId, int $pageId): array
+    {
+        return $this->requestApi(
+            'POST',
+            '/open_api/v1.2/pages/leads/mock/create/',
+            [
+                'advertiser_id' => $advertiserId,
+                'page_id' => $pageId
+            ]
+        );
+    }
+
+    /**
+     * Get page test lead.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $pageId     # Page ID
+     * @return array
+     * @throws \Throwable
+     */
+    public function getMock(int $advertiserId, int $pageId): array
+    {
+        return $this->requestApi(
+            'GET',
+            '/open_api/v1.2/pages/leads/mock/get/',
+            [
+                'advertiser_id' => $advertiserId,
+                'page_id' => $pageId
+            ]
+        );
+    }
+
+    /**
+     * Delete page test lead.
+     *
+     * @param int $advertiserId     # Advertiser ID
+     * @param int $leadId     # Lead ID
+     * @return array
+     * @throws \Throwable
+     */
+    public function deleteMock(int $advertiserId, int $leadId): array
+    {
+        return $this->requestApi(
+            'POST',
+            '/open_api/v1.2/pages/leads/mock/delete/',
+            [
+                'advertiser_id' => $advertiserId,
+                'lead_id' => $leadId
             ]
         );
     }

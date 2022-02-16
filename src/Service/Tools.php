@@ -107,4 +107,5 @@ final class Tools extends \Promopult\TikTokMarketingApi\AbstractService
             ]
         );
     }
+
 }
