@@ -202,7 +202,7 @@ final class OAuth2Client
             json_encode($query)
         );
 
-        $response = $this->httpClient->sendRequest($request);
+        $response = $this->sendRequest($request);
 
         $parsedBody = json_decode($response->getBody()->getContents(), true);
 
@@ -246,7 +246,7 @@ final class OAuth2Client
             ]
         );
 
-        $response = $this->httpClient->sendRequest($request);
+        $response = $this->sendRequest($request);
 
         $parsedBody = json_decode($response->getBody()->getContents(), true);
 
@@ -291,7 +291,7 @@ final class OAuth2Client
             json_encode($query)
         );
 
-        $response = $this->httpClient->sendRequest($request);
+        $response = $this->sendRequest($request);
 
         $parsedBody = json_decode($response->getBody()->getContents(), true);
 
