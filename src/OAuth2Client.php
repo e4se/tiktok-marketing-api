@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Promopult\TikTokMarketingApi;
 
+use Promopult\TikTokMarketingApi\Exception\MalformedResponse;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+
 final class OAuth2Client
 {
-    /**
-     * @var \Psr\Http\Client\ClientInterface
-     */
-    private $httpClient;
+    use RequestSenderTrait;
+
+    private ClientInterface $httpClient;
 
     /**
      * OAuth2Client constructor.
      *
-     * @param \Psr\Http\Client\ClientInterface $httpClient
+     * @param ClientInterface $httpClient
      */
     public function __construct(
-        \Psr\Http\Client\ClientInterface $httpClient
+        ClientInterface $httpClient
     ) {
         $this->httpClient = $httpClient;
     }
@@ -32,7 +35,7 @@ final class OAuth2Client
      *
      * @return array
      *
-     * @throws \Psr\Http\Client\ClientExceptionInterface
+     * @throws ClientExceptionInterface
      *
      * @see https://ads.tiktok.com/marketing_api/docs?id=100579
      */
@@ -56,12 +59,17 @@ final class OAuth2Client
             ]
         );
 
-        $response = $this->httpClient->sendRequest($request);
+        $response = $this->sendRequest($request);
 
-        $parsedBody = json_decode($response->getBody()->getContents(), true);
+        /** @var array $parsedBody */
+        $parsedBody = json_decode(
+            (string) $response->getBody(),
+            true,
+            JSON_THROW_ON_ERROR
+        );
 
         if (empty($parsedBody)) {
-            throw new \Promopult\TikTokMarketingApi\Exception\MalformedResponse($request, $response);
+            throw new MalformedResponse($request, $response);
         }
 
         return $parsedBody;
@@ -77,7 +85,7 @@ final class OAuth2Client
      *
      * @return array
      *
-     * @throws \Psr\Http\Client\ClientExceptionInterface
+     * @throws ClientExceptionInterface
      */
     public function getAccessToken(
         string $appId,
@@ -98,12 +106,13 @@ final class OAuth2Client
             ])
         );
 
-        $response = $this->httpClient->sendRequest($request);
+        $response = $this->sendRequest($request);
 
-        $accessToken = json_decode($response->getBody()->getContents(), true);
+        /** @var array $accessToken */
+        $accessToken = json_decode($response->getBody()->getContents(), true, JSON_THROW_ON_ERROR);
 
         if (empty($accessToken)) {
-            throw new \Promopult\TikTokMarketingApi\Exception\MalformedResponse($request, $response);
+            throw new MalformedResponse($request, $response);
         }
 
         return $accessToken;
@@ -124,7 +133,6 @@ final class OAuth2Client
      * @return string
      *
      * @see https://ads.tiktok.com/marketing_api/docs?id=100648
-     * @see
      */
     public static function createAuthorizationUrl(
         string $appId,

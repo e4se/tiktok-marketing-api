@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace Promopult\TikTokMarketingApi;
 
-abstract class AbstractService implements \Promopult\TikTokMarketingApi\ServiceInterface
-{
-    /**
-     * @var CredentialsInterface
-     */
-    protected $credentials;
+use GuzzleHttp\Psr7\Request;
+use Promopult\TikTokMarketingApi\Exception\ErrorResponse;
+use Promopult\TikTokMarketingApi\Exception\MalformedResponse;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-    /**
-     * @var \Psr\Http\Client\ClientInterface
-     */
-    protected $httpClient;
+abstract class AbstractService implements ServiceInterface
+{
+    use RequestSenderTrait;
+
+    protected CredentialsInterface $credentials;
+    protected ClientInterface $httpClient;
 
     public function __construct(
-        \Promopult\TikTokMarketingApi\CredentialsInterface $credentials,
-        \Psr\Http\Client\ClientInterface $httpClient
+        CredentialsInterface $credentials,
+        ClientInterface $httpClient
     ) {
         $this->credentials = $credentials;
         $this->httpClient = $httpClient;
@@ -42,45 +44,54 @@ abstract class AbstractService implements \Promopult\TikTokMarketingApi\ServiceI
         $headers = [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Access-Token' => $this->credentials->getAccessToken(),
         ];
+
+        if (!empty($this->credentials->getAccessToken())) {
+            $headers['Access-Token'] = $this->credentials->getAccessToken();
+        }
 
         $body = $httpMethod === 'get' || empty($args)
             ? null
-            : \json_encode($args);
+            : \json_encode($args, JSON_THROW_ON_ERROR);
 
-        $request = new \GuzzleHttp\Psr7\Request(
+        $request = new Request(
             $httpMethod,
             $url,
             $headers,
             $body
         );
 
-        $response = $this->httpClient->sendRequest($request);
+        $response = $this->sendRequest($request);
 
         return $this->handleResponse($response, $request);
     }
 
+    /**
+     * @throws \JsonException
+     */
     protected function handleResponse(
-        \Psr\Http\Message\ResponseInterface $response,
-        \Psr\Http\Message\RequestInterface $request
+        ResponseInterface $response,
+        RequestInterface $request
     ): array {
+        /** @var array $decodedJson */
         $decodedJson = \json_decode(
             (string) $response->getBody(),
-            true
+            true,
+            512,
+            JSON_THROW_ON_ERROR
         );
 
         if (!isset($decodedJson['code'])) {
-            throw new \Promopult\TikTokMarketingApi\Exception\MalformedResponse(
+            throw new MalformedResponse(
                 $request,
                 $response
             );
         }
 
         if ($decodedJson['code'] != 0) {
-            throw new \Promopult\TikTokMarketingApi\Exception\ErrorResponse(
+            throw new ErrorResponse(
                 (int) $decodedJson['code'],
-                $decodedJson['message'] ?? 'Unknown error.',
+                (string) ($decodedJson['message'] ?? 'Unknown error.'),
                 $request,
                 $response
             );
@@ -93,6 +104,9 @@ abstract class AbstractService implements \Promopult\TikTokMarketingApi\ServiceI
     {
         $formedArgs = [];
 
+        /**
+         * @psalm-suppress MixedAssignment
+         */
         foreach ($args as $arg => $value) {
             if (is_scalar($value)) {
                 $formedArgs[$arg] = $value;

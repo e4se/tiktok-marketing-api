@@ -1,6 +1,8 @@
 # TikTok Marketing API PHP client library
 
-Convenient full-featured wrapper for [TikTok Marketing API](https://ads.tiktok.com/marketing_api/docs).
+/!\ WIP: Not ready for production.
+
+Convenient wrapper for [TikTok Marketing API](https://ads.tiktok.com/marketing_api/docs).
 
 
 [![Build Status](https://travis-ci.org/promopult/tiktok-marketing-api.svg?branch=master)](https://travis-ci.org/promopult/tiktok-marketing-api)
@@ -25,10 +27,8 @@ or
 See [examples](/examples) folder.
 
 ```php
-$credentials = \Promopult\TikTokMarketingApi\Credentials::build(
-    getenv('__ACCESS_TOKEN__'),
-    getenv('__APP_ID__'),
-    getenv('__SECRET__')
+$credentials = \Promopult\TikTokMarketingApi\Credentials::fromAccessToken(
+    getenv('__ACCESS_TOKEN__')
 );
 
 // Any PSR-18 HTTP-client

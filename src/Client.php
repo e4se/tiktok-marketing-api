@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Promopult\TikTokMarketingApi;
 
+use Psr\Http\Client\ClientInterface;
+
 /**
  * Class Client
  *
+ * @property Service\Ad $ad
  * @property Service\AdGroup $adGroup
  * @property Service\Advertiser $advertiser
  * @property Service\Bc $bc
@@ -14,29 +17,24 @@ namespace Promopult\TikTokMarketingApi;
  * @property Service\Report $report
  * @property Service\Tools $tools
  * @property Service\User $user
- *
- * @author Dmitry Gladyshev <gladyshevd@icloud.com>
+ * @property Service\Leads $leads
+ * @property Service\Pages $pages
+ * @property Service\Creatives $creatives
+ * @property Service\Images $images
+ * @property Service\Video $video
  */
-final class Client implements \Promopult\TikTokMarketingApi\ServiceFactoryInterface
+final class Client implements ServiceFactoryInterface
 {
-    /**
-     * @var CredentialsInterface
-     */
-    private $credentials;
-
-    /**
-     * @var \Psr\Http\Client\ClientInterface
-     */
-    private $httpClient;
-
+    private CredentialsInterface $credentials;
+    private ClientInterface $httpClient;
     /**
      * @var ServiceInterface[]
      */
-    private $services = [];
+    private array $services = [];
 
     public function __construct(
-        \Promopult\TikTokMarketingApi\CredentialsInterface $credentials,
-        \Psr\Http\Client\ClientInterface $httpClient
+        CredentialsInterface $credentials,
+        ClientInterface $httpClient
     ) {
         $this->credentials = $credentials;
         $this->httpClient = $httpClient;
@@ -54,17 +52,21 @@ final class Client implements \Promopult\TikTokMarketingApi\ServiceFactoryInterf
     /**
      * @inheritdoc
      */
-    public function createService(string $serviceName): \Promopult\TikTokMarketingApi\ServiceInterface
+    public function createService(string $serviceName): ServiceInterface
     {
         if (empty($this->services[$serviceName])) {
-
             $serviceClass = __NAMESPACE__ . '\\Service\\' . ucfirst($serviceName);
 
             if (!class_exists($serviceClass)) {
                 throw new \InvalidArgumentException("Service {$serviceName} is not found.");
             }
+            /**
+             * @var ServiceInterface $instance
+             * @psalm-suppress MixedMethodCall
+             */
+            $instance = new $serviceClass($this->credentials, $this->httpClient);
 
-            $this->services[$serviceName] = new $serviceClass($this->credentials, $this->httpClient);
+            $this->services[$serviceName] = $instance;
         }
 
         return $this->services[$serviceName];
