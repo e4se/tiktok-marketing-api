@@ -176,8 +176,8 @@ final class OAuth2Client
         string $appId,
         string $secret,
         int $advertiserId,
-        ?int $pageId = null,
         string $webhook,
+        ?int $pageId = null,
         string $apiBaseUrl = CredentialsInterface::API_BASE_URL
     ): array {
         $query = [
