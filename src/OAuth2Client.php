@@ -53,7 +53,7 @@ final class OAuth2Client
 
         $request = new \GuzzleHttp\Psr7\Request(
             'GET',
-            $apiBaseUrl . '/open_api/v1.2/oauth2/advertiser/get/?' . $query,
+            $apiBaseUrl . '/open_api/v1.3/oauth2/advertiser/get/?' . $query,
             [
                 'Accept' => 'application/json'
             ]
@@ -95,7 +95,7 @@ final class OAuth2Client
     ): array {
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
-            $apiBaseUrl . '/open_api/v1.2/oauth2/access_token/',
+            $apiBaseUrl . '/open_api/v1.3/oauth2/access_token/',
             [
                 'Content-Type' => 'application/json'
             ],
@@ -195,7 +195,7 @@ final class OAuth2Client
         }
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
-            $apiBaseUrl . '/open_api/v1.2/subscription/subscribe/',
+            $apiBaseUrl . '/open_api/v1.3/subscription/subscribe/',
             [
                 'Content-Type' => 'application/json'
             ],
@@ -240,7 +240,7 @@ final class OAuth2Client
 
         $request = new \GuzzleHttp\Psr7\Request(
             'GET',
-            $apiBaseUrl . '/open_api/v1.2/subscription/get/?' . $query,
+            $apiBaseUrl . '/open_api/v1.3/subscription/get/?' . $query,
             [
                 'Accept' => 'application/json'
             ]
@@ -284,7 +284,7 @@ final class OAuth2Client
         ];
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
-            $apiBaseUrl . '/open_api/v1.2/subscription/unsubscribe/',
+            $apiBaseUrl . '/open_api/v1.3/subscription/unsubscribe/',
             [
                 'Content-Type' => 'application/json'
             ],
