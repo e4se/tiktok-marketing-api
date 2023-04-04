@@ -36,7 +36,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     ): array {
         return $this->requestApi(
             'GET',
-            '/open_api/v1.3/pages/get/',
+            '/open_api/v1.3/page/get/',
             [
                 'advertiser_id' => $advertiserId,
                 'page' => $page,
@@ -61,7 +61,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'GET',
-            '/open_api/v1.3/pages/get/',
+            '/open_api/v1.3/page/get/',
             array_merge($params, [
                 'advertiser_id' => $advertiserId
             ])
@@ -80,7 +80,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'POST',
-            '/open_api/v1.3/pages/leads/mock/create/',
+            '/open_api/v1.3/page/leads/mock/create/',
             [
                 'advertiser_id' => $advertiserId,
                 'page_id' => $pageId
@@ -100,7 +100,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'GET',
-            '/open_api/v1.3/pages/leads/mock/get/',
+            '/open_api/v1.3/page/leads/mock/get/',
             [
                 'advertiser_id' => $advertiserId,
                 'page_id' => $pageId
@@ -120,7 +120,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'POST',
-            '/open_api/v1.3/pages/leads/mock/delete/',
+            '/open_api/v1.3/page/leads/mock/delete/',
             [
                 'advertiser_id' => $advertiserId,
                 'lead_id' => $leadId
