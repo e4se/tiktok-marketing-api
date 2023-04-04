@@ -46,7 +46,6 @@ final class OAuth2Client
         string $apiBaseUrl = CredentialsInterface::API_BASE_URL
     ): array {
         $query = http_build_query([
-            'access_token' => $accessToken,
             'app_id' => $appId,
             'secret' => $secret
         ]);
@@ -55,7 +54,8 @@ final class OAuth2Client
             'GET',
             $apiBaseUrl . '/open_api/v1.3/oauth2/advertiser/get/?' . $query,
             [
-                'Accept' => 'application/json'
+                'Accept' => 'application/json',
+                'Access-Token' => $accessToken
             ]
         );
 
