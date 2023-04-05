@@ -80,7 +80,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'POST',
-            '/open_api/v1.3/page/leads/mock/create/',
+            '/open_api/v1.3/page/lead/mock/create/',
             [
                 'advertiser_id' => $advertiserId,
                 'page_id' => $pageId
@@ -100,7 +100,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'GET',
-            '/open_api/v1.3/page/leads/mock/get/',
+            '/open_api/v1.3/page/lead/mock/get/',
             [
                 'advertiser_id' => $advertiserId,
                 'page_id' => $pageId
@@ -120,7 +120,7 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
     {
         return $this->requestApi(
             'POST',
-            '/open_api/v1.3/page/leads/mock/delete/',
+            '/open_api/v1.3/page/lead/mock/delete/',
             [
                 'advertiser_id' => $advertiserId,
                 'lead_id' => $leadId
