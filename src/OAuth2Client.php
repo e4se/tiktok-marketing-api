@@ -183,7 +183,7 @@ final class OAuth2Client
         $query = [
             'subscription_detail' => [
                 'access_token' => $accessToken,
-                'advertiser_id' => $advertiserId,
+                'advertiser_id' => (string)$advertiserId,
             ],
             'subscribe_entity' => 'LEAD',
             'callback_url' => $webhook,
@@ -191,7 +191,7 @@ final class OAuth2Client
             'secret' => $secret
         ];
         if ($pageId) {
-            $query['subscription_detail']['page_id'] = $pageId;
+            $query['subscription_detail']['page_id'] = (string)$pageId;
         }
         $request = new \GuzzleHttp\Psr7\Request(
             'POST',
