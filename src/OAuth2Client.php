@@ -185,8 +185,8 @@ final class OAuth2Client
                 'access_token' => $accessToken,
                 'advertiser_id' => $advertiserId,
             ],
-            'object' => 'LEAD',
-            'url' => $webhook,
+            'subscribe_entity' => 'LEAD',
+            'callback_url' => $webhook,
             'app_id' => $appId,
             'secret' => $secret
         ];
@@ -232,7 +232,7 @@ final class OAuth2Client
         string $apiBaseUrl = CredentialsInterface::API_BASE_URL
     ): array {
         $query = http_build_query([
-            'object' => 'LEAD',
+            'subscribe_entity' => 'LEAD',
             'app_id' => $appId,
             'secret' => $secret,
             'page_size' => 1000
