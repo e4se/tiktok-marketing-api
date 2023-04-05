@@ -82,8 +82,8 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
             'POST',
             '/open_api/v1.3/page/lead/mock/create/',
             [
-                'advertiser_id' => $advertiserId,
-                'page_id' => $pageId
+                'advertiser_id' => (string)$advertiserId,
+                'page_id' => (string)$pageId
             ]
         );
     }
@@ -102,8 +102,8 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
             'GET',
             '/open_api/v1.3/page/lead/mock/get/',
             [
-                'advertiser_id' => $advertiserId,
-                'page_id' => $pageId
+                'advertiser_id' => (string)$advertiserId,
+                'page_id' => (string)$pageId
             ]
         );
     }
@@ -122,8 +122,8 @@ final class Pages extends \Promopult\TikTokMarketingApi\AbstractService
             'POST',
             '/open_api/v1.3/page/lead/mock/delete/',
             [
-                'advertiser_id' => $advertiserId,
-                'lead_id' => $leadId
+                'advertiser_id' => (string)$advertiserId,
+                'lead_id' => (string)$leadId
             ]
         );
     }
